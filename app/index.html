@@ -5,6 +5,9 @@
 		<title>AngularJS • TodoMVC</title>
         <link rel="stylesheet" href="node_modules/todomvc-common/base.css">
 		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/style.css">
+		
 		<style>[ng-cloak] { display: none; }</style>
 	</head>
 	<body ng-app="todomvc">
@@ -25,8 +28,10 @@
 						<li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
 							<div class="view">
 								<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
-								<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
-								<button class="destroy" ng-click="removeTodo(todo)"></button>
+								<label ng-dblclick="editTodo(todo)">{{todo.title}}</label> <br />
+								<label ng-dblclick="editTodo(todo)" class="td-date td-created"><span class="fa fa-clock-o"></span> Created: {{todo.created | date:'dd/MM/yyyy HH:mm'}}</label>
+								<label ng-dblclick="editTodo(todo)" class="td-date td-last-update" ng-show="todo.lastUpdate"><span class="fa fa-clock-o"></span> Edited: {{todo.lastUpdate | date:'dd/MM/yyyy HH:mm'}}</label>								
+								<button class="destroy" ng-click="removeTodo(todo)"></button> 
 							</div>
 							<form ng-submit="saveEdits(todo, 'submit')">
 								<input class="edit" ng-trim="false" ng-model="todo.title" todo-escape="revertEdits(todo)" ng-blur="saveEdits(todo, 'blur')" todo-focus="todo == editedTodo">

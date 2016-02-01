@@ -11,6 +11,8 @@ angular.module('todomvc')
 
 		var todos = $scope.todos = store.todos;
 
+		console.log(todos);
+
 		$scope.newTodo = '';
 		$scope.editedTodo = null;
 
@@ -31,11 +33,19 @@ angular.module('todomvc')
 		$scope.addTodo = function () {
 			var newTodo = {
 				title: $scope.newTodo.trim(),
-				completed: false
+				completed: false, 
+				created: new Date(), //REQ2: add created date and time
+				lastUpdate: "Not modified"
 			};
 
 			if (!newTodo.title) {
 				return;
+			}
+			
+		    //REQ3: validates the title in order to avoid duplication
+			for(var i in todos){
+				if(newTodo.title === todos[i].title)
+					return;
 			}
 
 			$scope.saving = true;
@@ -77,6 +87,18 @@ angular.module('todomvc')
 				return;
 			}
 
+				
+		    //REQ3: validates the title in order to avoid duplication
+			var todoIndex = todos.indexOf(todo);			 
+			for(var i in todos){
+				if(todoIndex != i && todo.title === todos[i].title){
+					$scope.editedTodo = null;
+					return;
+				}
+			}
+			            
+			todo.lastUpdate = new Date(); //REQ2: add updated date and time
+			
 			store[todo.title ? 'put' : 'delete'](todo)
 				.then(function success() {}, function error() {
 					todo.title = $scope.originalTodo.title;
